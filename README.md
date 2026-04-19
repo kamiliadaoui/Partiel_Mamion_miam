@@ -33,30 +33,12 @@ mamionmiam/
 
 ### 1. Prérequis
 
-- [Python 3.12+](https://www.python.org/downloads/) — cocher "Add to PATH" à l'installation
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
-### 2. Cloner et préparer
 
-```bash
-git clone <url-du-repo>
-cd mamionmiam
-python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
-```
 
-### 3. Télécharger les données
 
-```bash
-cd data
-curl -O https://data.atontour.info/IABD/mamionmiam.zip
-unzip mamionmiam.zip
-mv mamionmiam/*.json .
-cd ..
-```
 
-### 4. Lancer les bases de données
+### 1. Lancer les bases de données
 
 ```bash
 docker-compose up -d
@@ -65,7 +47,7 @@ docker-compose up -d
 - MongoDB : `localhost:27017`
 - Neo4J Browser : http://localhost:7474 (login : `neo4j` / `mamionmiam`)
 
-### 5. Variables d'environnement (optionnel)
+### 2. Variables d'environnement
 
 Créer un fichier `.env` pour surcharger les valeurs par défaut :
 
@@ -100,13 +82,12 @@ Les graphiques PNG sont générés automatiquement dans `exports/` à chaque ex�
 
 > Ou ouvrir `analyse.ipynb` dans VS Code / Jupyter et sélectionner le kernel **Python (mamionmiam)**.
 
-### Étape 3 (optionnel) — Graphe des ventes dans Neo4J
+### Étape 3  — Graphe des ventes dans Neo4J
 
 ```bash
 python scripts/05_import_neo4j_ventes.py
 ```
 
-> ⚠️ Ce script **réinitialise Neo4J**. Ne pas lancer si le graphe parrainage est actif.
 
 ---
 
