@@ -1,0 +1,31 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# Données brutes
+data/
+*.zip
+*.json
+
+# Exports (optionnel - décommenter si on ne veut pas versionner les PNG)
+# exports/*.png
+
+# Environnement
+.env
+*.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
