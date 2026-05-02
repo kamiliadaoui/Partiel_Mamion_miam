@@ -1,25 +1,3 @@
-"""
-01_import_mongodb.py
-====================
-Charge les 6 fichiers JSON dans MongoDB (une collection par type).
-MongoDB devient la seule source de vérité pour la suite.
-
-Structure réelle des fichiers :
-  shops.json       : 4 boutiques  — id, name, lat, lng, adresse
-  clients.json     : 781 clients  — id, nom, genre, prenom, naissance,
-                                    insee, code_postal, commune,
-                                    coords{lat,lng}, entreprise{siret,nom}
-  parrainages.json : 546 entrées  — dateParrainage, idParrain, idFilleul
-  entreprises.json : 54 entrées   — nom, siret, coords, ville,
-                                    domain_code/label, naf_code/label, ...
-  achats.json      : 1422 tickets — ticket, acheteur, date, articles,
-                                    total, detail[{SKU,label,pu,qte,total}]
-  produits.json    : 130 produits — SKU, Label, Prix, Rayon, Categorie,
-                                    Famille, Rubrique, Marque, ...
-
-Prérequis : docker-compose up -d (MongoDB sur localhost:27017)
-Usage     : python scripts/01_import_mongodb.py
-"""
 
 import json
 import os
@@ -89,7 +67,7 @@ def main():
 
     col = import_collection(db, "achats", load_json("achats.json"))
     col.create_index("acheteur")
-    col.create_index("ticket")
+    col.create_index("ticket", unique=True)
 
     col = import_collection(db, "produits", load_json("produits.json"))
     col.create_index("SKU", unique=True)

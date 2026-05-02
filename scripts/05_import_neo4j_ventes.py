@@ -1,19 +1,3 @@
-"""
-05_import_neo4j_ventes.py
-==========================
-Alimente Neo4J pour l'analyse des ventes.
-Source de vérité : MongoDB.
-
-Schéma :
-  (Usr)-[:HAS_BOUGHT]->(Ticket)-[:CONTAINS {qte, total}]->(Produit)
-  (Produit)-[:IN_CAT]->(Categorie)-[:IN_RAYON]->(Rayon)
-
-  Ce script VIDE Neo4J avant import.
-    Ne pas lancer si le graphe parrainage est actif.
-
-État requis : MongoDB alimenté (01_import_mongodb.py)
-Usage       : python scripts/05_import_neo4j_ventes.py
-"""
 
 import os
 import sys
@@ -43,9 +27,7 @@ with driver.session() as s:
     ]:
         s.run(cql)
 
-# ---------------------------------------------------------------------------
-# Produits → Categorie → Rayon  (130 produits, 26 cat, 4 rayons)
-# ---------------------------------------------------------------------------
+
 print(" Produits…")
 produits = list(db.produits.find({}, {"_id": 0}))
 BATCH = 50
@@ -66,15 +48,13 @@ with driver.session() as s:
         """, batch=batch)
 print(f"   {len(produits)} produits, sous-graphe Categorie/Rayon créé")
 
-# ---------------------------------------------------------------------------
-# Achats : Usr → Ticket → Produits  (1422 tickets)
-# ---------------------------------------------------------------------------
+
 print(" Achats (tickets + lignes)…")
 achats = list(db.achats.find({}, {"_id": 0}))
 
 with driver.session() as s:
     for a in achats:
-        # Nœud Ticket + lien Usr
+       
         s.run("""
             MERGE (u:Usr    {id: $acheteur})
             MERGE (t:Ticket {id: $ticket})
@@ -86,7 +66,7 @@ with driver.session() as s:
         date=str(a.get("date", "")),
         total=float(a.get("total", 0))
         )
-        # Lignes du ticket
+    
         for item in a.get("detail", []):
             s.run("""
                 MATCH (t:Ticket {id: $ticket})
